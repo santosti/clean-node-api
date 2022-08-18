@@ -10,7 +10,7 @@ describe('Signup Controller ', () => {
     const sut = makeSut();
     const httpRequest = {
       body: {
-        mail: 'test@example.com',
+        email: 'test@example.com',
         password: 'testpassword',
         passwordConfirmation: 'testpassword',
       },
@@ -36,5 +36,21 @@ describe('Signup Controller ', () => {
 
     expect(httpResponde.statusCode).toBe(400);
     expect(httpResponde.body).toEqual(new MissingParamError('email'));
+  });
+
+  test('should return 400 if no password is provided', () => {
+    const sut = makeSut();
+    const httpRequest = {
+      body: {
+        name: 'testname',
+        email: 'test@example.com',
+        passwordConfirmation: 'testpassword',
+      },
+    };
+
+    const httpResponde = sut.handle(httpRequest);
+
+    expect(httpResponde.statusCode).toBe(400);
+    expect(httpResponde.body).toEqual(new MissingParamError('password'));
   });
 });
