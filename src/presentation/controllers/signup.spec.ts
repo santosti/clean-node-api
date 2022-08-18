@@ -1,8 +1,8 @@
 import { MissingParamError } from '../errors/missing-param-error';
-import { SignupController } from './signup';
+import { SignUpController } from './signup';
 
-const makeSut = (): SignupController => {
-  return new SignupController();
+const makeSut = (): SignUpController => {
+  return new SignUpController();
 };
 
 describe('Signup Controller ', () => {
