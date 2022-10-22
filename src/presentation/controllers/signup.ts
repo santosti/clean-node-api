@@ -29,13 +29,13 @@ export class SignUpController implements Controller {
         }
       }
 
-      if (
-        httpResquest.body.password !== httpResquest.body.passwordConfirmation
-      ) {
+      const { password, passwordConfirmation, email } = httpResquest.body;
+
+      if (password !== passwordConfirmation) {
         return badRequest(new InvalidParamError('passwordConfirmation'));
       }
 
-      if (!this.emailValidator.isValid(httpResquest.body.email)) {
+      if (!this.emailValidator.isValid(email)) {
         return badRequest(new InvalidParamError('email'));
       }
     } catch (error) {
