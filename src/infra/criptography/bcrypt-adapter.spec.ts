@@ -27,4 +27,14 @@ describe('Bcrypt Adapter ', () => {
 
     expect(hash).toBe('hash_value');
   });
+
+  test('should throw if bcrypt throws', async () => {
+    const sut = makeSut();
+    bcrypt.hash = jest.fn(async (): Promise<string> => {
+      return new Promise((resolve, reject) => reject(new Error()));
+    });
+    const promise = sut.encrypt('any_value');
+
+    await expect(promise).rejects.toThrow();
+  });
 });
