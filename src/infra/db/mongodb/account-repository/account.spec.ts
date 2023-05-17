@@ -1,9 +1,10 @@
+import env from '../../../../main/config/env';
 import { MongoHelper } from '../helpers/mongo-helper';
 import { AccountMongoRepository } from './accounts';
 
 describe('Account mongo repository ', () => {
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGODB_URL);
+    await MongoHelper.connect(env.mongoUrl);
   });
 
   afterAll(async () => {
@@ -11,7 +12,8 @@ describe('Account mongo repository ', () => {
   });
 
   beforeEach(async () => {
-    await MongoHelper.removeAll('accounts');
+    const accountCollection = MongoHelper.getConnection('accounts');
+    await accountCollection.deleteMany({});
   });
 
   const makeSut = (): AccountMongoRepository => {
