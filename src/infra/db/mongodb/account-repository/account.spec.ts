@@ -1,6 +1,6 @@
 import env from '../../../../main/config/env';
 import { MongoHelper } from '../helpers/mongo-helper';
-import { AccountMongoRepository } from './accounts';
+import { AccountMongoRepository } from './account';
 
 describe('Account mongo repository ', () => {
   beforeAll(async () => {
