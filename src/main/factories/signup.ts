@@ -3,15 +3,20 @@ import { SignUpController } from '../../presentation/controllers/signup/signup';
 import { DBAddAccount } from '../../data/usecases/add-account/db-add-account';
 import { EmailValidatorAdapter } from '../../utils/email-validator-adapter';
 import { BcryptAdapter } from '../../infra/criptography/bcrypt-adapter';
+import { LogControllerDecorator } from '../decorators/log';
+import { Controller } from '../../presentation/protocols';
 
-export const makeSignUpController = (): SignUpController => {
+export const makeSignUpController = (): Controller => {
   const salt = 12;
   const emailValidatorAdapter = new EmailValidatorAdapter();
   const bcryptAdapter = new BcryptAdapter(salt);
   const accountMongoRepository = new AccountMongoRepository();
   const dbAddAccount = new DBAddAccount(bcryptAdapter, accountMongoRepository);
-
-  return new SignUpController(emailValidatorAdapter, dbAddAccount);
+  const signUpController = new SignUpController(
+    emailValidatorAdapter,
+    dbAddAccount
+  );
+  return new LogControllerDecorator(signUpController);
 };
 // This function creates an instance of SignUpController with all its dependencies.
 // It uses EmailValidatorAdapter for email validation, BcryptAdapter for password encryption,
