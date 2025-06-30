@@ -50,4 +50,29 @@ describe('Log Decorator', () => {
     sut.handle(httpRequest);
     expect(handleSpy).toHaveBeenCalledWith(httpRequest);
   });
+
+  test('Should return the same resut of the controller', async () => {
+    const { sut } = makeSut();
+
+    const httpRequest = {
+      statusCode: 200,
+      body: {
+        email: 'any_email',
+        name: 'any_name',
+        password: 'any_password',
+        passwordConfirmation: 'any_password',
+      },
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual({
+      statusCode: 200,
+      body: {
+        id: 'any_id',
+        name: 'any_name',
+        email: 'any_email',
+      },
+    });
+  });
 });
