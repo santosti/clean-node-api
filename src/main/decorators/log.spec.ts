@@ -15,7 +15,7 @@ interface SutTypes {
 
 const makeController = (): Controller => {
   class ControllerStub implements Controller {
-    async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
+    async handle(_httpRequest: HttpRequest): Promise<HttpResponse> {
       const httpResponse: HttpResponse = {
         statusCode: 200,
         body: {
@@ -32,7 +32,7 @@ const makeController = (): Controller => {
 
 const makeLogErrorRepository = (): LogErrorRepository => {
   class LogErrorRepositoryStub implements LogErrorRepository {
-    async log(stack: string): Promise<void> {
+    async logError(_stack: string): Promise<void> {
       return new Promise((resolve) => resolve());
     }
   }
@@ -49,7 +49,7 @@ const makeSut = (): SutTypes => {
   return { sut, controllerStub, logErrorRepositoryStub };
 };
 
-describe('Log Decorator', () => {
+describe('LogError Decorator', () => {
   test('Should call controller handle', async () => {
     const { sut, controllerStub } = makeSut();
     const handleSpy = jest.spyOn(controllerStub, 'handle');
@@ -98,7 +98,7 @@ describe('Log Decorator', () => {
     fakeError.stack = 'any_error';
 
     const error = serverError(fakeError);
-    const logSpy = jest.spyOn(logErrorRepositoryStub, 'log');
+    const logErrorSpy = jest.spyOn(logErrorRepositoryStub, 'logError');
 
     jest
       .spyOn(controllerStub, 'handle')
@@ -115,6 +115,6 @@ describe('Log Decorator', () => {
     };
 
     await sut.handle(httpRequest);
-    expect(logSpy).toHaveBeenCalledWith('any_error');
+    expect(logErrorSpy).toHaveBeenCalledWith('any_error');
   });
 });
