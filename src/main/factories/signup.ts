@@ -1,4 +1,5 @@
 import { AccountMongoRepository } from '../../infra/db/mongodb/account-repository/account';
+import { LogMongoRepository } from '../../infra/db/mongodb/log-repository/log';
 import { SignUpController } from '../../presentation/controllers/signup/signup';
 import { DBAddAccount } from '../../data/usecases/add-account/db-add-account';
 import { EmailValidatorAdapter } from '../../utils/email-validator-adapter';
@@ -16,7 +17,8 @@ export const makeSignUpController = (): Controller => {
     emailValidatorAdapter,
     dbAddAccount
   );
-  return new LogControllerDecorator(signUpController);
+  const logMongoRepository = new LogMongoRepository();
+  return new LogControllerDecorator(signUpController, logMongoRepository);
 };
 // This function creates an instance of SignUpController with all its dependencies.
 // It uses EmailValidatorAdapter for email validation, BcryptAdapter for password encryption,
