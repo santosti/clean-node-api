@@ -14,7 +14,7 @@ interface sutType {
 
 const makeEncrypter = (): Encrypter => {
   class EncrypterStub implements Encrypter {
-    async encrypt(value: string): Promise<string> {
+    async encrypt(_value: string): Promise<string> {
       return new Promise((resolve) => resolve('hash_password'));
     }
   }
@@ -23,7 +23,7 @@ const makeEncrypter = (): Encrypter => {
 
 const makeAddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositorySub implements AddAccountRepository {
-    async add(accountData: AddAccountModel): Promise<AccountModel> {
+    async add(_accountData: AddAccountModel): Promise<AccountModel> {
       const fakeAccount = {
         id: 'valid_id',
         name: 'valid_name',
@@ -67,9 +67,7 @@ describe('DBAddAccount Usecases ', () => {
   test('should throw if Encrypter throws', async () => {
     const { sut, encrypterStub } = makeSut();
 
-    encrypterStub.encrypt = jest.fn(async () => {
-      return new Promise((resolve, reject) => reject(new Error()));
-    });
+    jest.spyOn(encrypterStub, 'encrypt').mockRejectedValue(new Error());
 
     const accountData = {
       name: 'valid_name',
@@ -78,7 +76,6 @@ describe('DBAddAccount Usecases ', () => {
     };
 
     const promise = sut.add(accountData);
-
     await expect(promise).rejects.toThrow();
   });
 
@@ -93,7 +90,6 @@ describe('DBAddAccount Usecases ', () => {
     };
 
     await sut.add(accountData);
-
     expect(addSpy).toHaveBeenCalledWith({
       name: 'valid_name',
       email: 'valid_email',
@@ -103,10 +99,7 @@ describe('DBAddAccount Usecases ', () => {
 
   test('should throw if AddAccountRepository throws', async () => {
     const { sut, addAccountRepositoryStub } = makeSut();
-
-    addAccountRepositoryStub.add = jest.fn(async () => {
-      return new Promise((resolve, reject) => reject(new Error()));
-    });
+    jest.spyOn(addAccountRepositoryStub, 'add').mockRejectedValue(new Error());
 
     const accountData = {
       name: 'valid_name',
@@ -115,7 +108,6 @@ describe('DBAddAccount Usecases ', () => {
     };
 
     const promise = sut.add(accountData);
-
     await expect(promise).rejects.toThrow();
   });
 
@@ -129,7 +121,6 @@ describe('DBAddAccount Usecases ', () => {
     };
 
     const account = await sut.add(accountData);
-
     expect(account).toEqual({
       id: 'valid_id',
       name: 'valid_name',
