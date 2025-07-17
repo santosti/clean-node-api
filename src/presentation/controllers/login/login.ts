@@ -6,6 +6,7 @@ import {
 import {
   badRequest,
   serverError,
+  unauthorized,
 } from '../../../presentation/helpers/http-helper';
 import { HttpRequest, HttpResponse } from '../../../presentation/protocols';
 import { Controller } from '../../../presentation/protocols/controller';
@@ -37,7 +38,11 @@ export class LoginController implements Controller {
         return badRequest(new InvalidParamError('email'));
       }
 
-      await this.authentication.auth(email, password);
+      const accessToken = await this.authentication.auth(email, password);
+
+      if (!accessToken) {
+        return unauthorized();
+      }
     } catch (error) {
       return serverError(error);
     }
