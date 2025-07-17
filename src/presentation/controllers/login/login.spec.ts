@@ -1,4 +1,7 @@
-import { badRequest } from '../../../presentation/helpers/http-helper';
+import {
+  badRequest,
+  serverError,
+} from '../../../presentation/helpers/http-helper';
 import { EmailValidator } from '../signup/signup-protocols';
 import { LoginController } from './login';
 import {
@@ -73,5 +76,20 @@ describe('Login Controller', () => {
     const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid');
     await sut.handle(httpRequest);
     expect(isValidSpy).toHaveBeenCalledWith('any_email@email.com');
+  });
+
+  test('should return 500 if EmailValidator throws', async () => {
+    const { sut, emailValidatorStub } = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'any_email@email.com',
+        password: 'any_password',
+      },
+    };
+    jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(() => {
+      throw new Error();
+    });
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(serverError(new Error()));
   });
 });
