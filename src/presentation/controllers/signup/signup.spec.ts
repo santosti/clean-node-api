@@ -301,4 +301,22 @@ describe('Signup Controller ', () => {
     await sut.handle(httpRequest);
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body);
   });
+
+  test('should return 400 if Validation returns an error', async () => {
+    const { sut, validationStub } = makeSut();
+    jest
+      .spyOn(validationStub, 'validate')
+      .mockReturnValueOnce(new MissingParamError('any_field'));
+    const httpRequest = {
+      body: {
+        name: 'valid_name',
+        email: 'valid_email@example.com',
+        password: 'valid_password',
+        passwordConfirmation: 'valid_password',
+      },
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(new MissingParamError('any_field'));
+  });
 });
