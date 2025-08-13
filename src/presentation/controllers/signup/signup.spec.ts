@@ -251,6 +251,6 @@ describe('Signup Controller ', () => {
     };
 
     const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual(new MissingParamError('any_field'));
+    expect(httpResponse.body).toEqual(new MissingParamError('any_field'));
   });
 });
