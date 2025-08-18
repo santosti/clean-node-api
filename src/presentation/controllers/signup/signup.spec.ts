@@ -1,5 +1,5 @@
 import { AccountModel, AddAccountModel, AddAccount } from './signup-protocols';
-import { Validation } from '../../../presentation/helpers/validators/validation';
+import { Validation } from '../../protocols/validation';
 import { MissingParamError, ServerError } from '../../errors';
 import { SignUpController } from './signup';
 
