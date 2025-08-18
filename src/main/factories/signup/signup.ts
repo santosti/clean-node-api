@@ -4,7 +4,7 @@ import { SignUpController } from '../../../presentation/controllers/signup/signu
 import { DBAddAccount } from '../../../data/usecases/add-account/db-add-account';
 import { BcryptAdapter } from '../../../infra/criptography/bcrypt-adapter';
 import { LogControllerDecorator } from '../../decorators/log';
-import { Controller } from '../../../presentation/protocols';
+import { Controller } from '@/presentation/protocols';
 import { makeSignUpValidation } from './signup-validation';
 
 export const makeSignUpController = (): Controller => {
