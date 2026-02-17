@@ -146,4 +146,13 @@ describe('DBAuthenticaion Usecase ', () => {
     });
     await expect(promise).rejects.toThrow();
   });
+
+  test('should returns valid access token', async () => {
+    const { sut } = makeSut();
+    const accessToken = await sut.auth({
+      email: 'any_email@mail.com',
+      password: 'any_password',
+    });
+    expect(accessToken).toBe('any_token');
+  });
 });
