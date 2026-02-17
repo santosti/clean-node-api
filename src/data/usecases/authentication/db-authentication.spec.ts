@@ -136,4 +136,14 @@ describe('DBAuthenticaion Usecase ', () => {
     });
     expect(generateSpy).toHaveBeenCalledWith('any_id');
   });
+
+  test('should throw if TokenGenerator throws', async () => {
+    const { sut, tokenGeneratorStub } = makeSut();
+    jest.spyOn(tokenGeneratorStub, 'generate').mockRejectedValue(new Error());
+    const promise = sut.auth({
+      email: 'any_email@mail.com',
+      password: 'any_password',
+    });
+    await expect(promise).rejects.toThrow();
+  });
 });
