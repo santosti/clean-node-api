@@ -179,4 +179,16 @@ describe('DBAuthenticaion Usecase ', () => {
     });
     expect(updateSpy).toHaveBeenCalledWith('any_id', 'any_token');
   });
+
+  test('should throw if UpdateAccessTokenRepository throws', async () => {
+    const { sut, updateAccessTokenRepositoryStub } = makeSut();
+    jest
+      .spyOn(updateAccessTokenRepositoryStub, 'update')
+      .mockRejectedValue(new Error());
+    const promise = sut.auth({
+      email: 'any_email@mail.com',
+      password: 'any_password',
+    });
+    await expect(promise).rejects.toThrow();
+  });
 });
