@@ -40,4 +40,16 @@ describe('DBAuthenticaion Usecase ', () => {
     await sut.auth({ email: 'any_email@mail.com', password: 'any_password' });
     expect(loadSpy).toHaveBeenCalledWith('any_email@mail.com');
   });
+
+  test('should throw if LoadAccountByEmailRepositoy throws', async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+    jest
+      .spyOn(loadAccountByEmailRepositoryStub, 'load')
+      .mockRejectedValue(new Error());
+    const promise = sut.auth({
+      email: 'any_email@mail.com',
+      password: 'any_password',
+    });
+    await expect(promise).rejects.toThrow();
+  });
 });
