@@ -52,4 +52,17 @@ describe('DBAuthenticaion Usecase ', () => {
     });
     await expect(promise).rejects.toThrow();
   });
+
+  test('should return null if LoadAccountByEmailRepositoy returns null', async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+    jest
+      .spyOn(loadAccountByEmailRepositoryStub, 'load')
+      .mockReturnValueOnce(null);
+    const accessToken = await sut.auth({
+      email: 'any_email@mail.com',
+      password: 'any_password',
+    });
+    console.log('Debugando:', accessToken);
+    expect(accessToken).toBeNull();
+  });
 });
