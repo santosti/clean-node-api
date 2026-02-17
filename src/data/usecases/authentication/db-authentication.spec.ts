@@ -1,9 +1,11 @@
-import { LoadAccountByEmailRepositoy } from '../../protocols/db/load-account-by-email-repository';
-import { TokenGenerator } from '@/data/protocols/criptografhy/token-generator';
-import { HashComparer } from '@/data/protocols/criptografhy/hash-compare';
-import { AccountModel } from '../add-account/db-account-protocols';
 import { DbAuthentication } from './db-authentication';
-import { UpdateAccessTokenRepository } from '@/data/protocols/db/update-access-token-repository';
+import {
+  LoadAccountByEmailRepositoy,
+  TokenGenerator,
+  HashComparer,
+  AccountModel,
+  UpdateAccessTokenRepository,
+} from './db-authentication-protocols';
 
 interface sutType {
   sut: DbAuthentication;
