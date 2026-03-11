@@ -21,4 +21,8 @@ export const MongoHelper = {
   async removeAll(collection: string): Promise<void> {
     await this.getConnection(collection).deleteMany({});
   },
+  map: (collection: any): any => {
+    const { _id, ...collectionWithoutId } = collection;
+    return Object.assign({}, collectionWithoutId, { id: _id });
+  },
 };
