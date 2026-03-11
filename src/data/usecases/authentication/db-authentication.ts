@@ -1,5 +1,5 @@
 import {
-  LoadAccountByEmailRepositoy,
+  LoadAccountByEmailRepository,
   Encrypter,
   HashComparer,
   UpdateAccessTokenRepository,
@@ -10,13 +10,13 @@ import {
 } from '@/domain/usecases/authentication';
 
 export class DbAuthentication implements Authentication {
-  private readonly loadAccountByEmailRepository: LoadAccountByEmailRepositoy;
+  private readonly loadAccountByEmailRepository: LoadAccountByEmailRepository;
   private readonly updateAccessTokenRepository: UpdateAccessTokenRepository;
   private readonly hashComparer: HashComparer;
   private readonly encrypter: Encrypter;
 
   constructor(
-    loadAccountByEmailRepository: LoadAccountByEmailRepositoy,
+    loadAccountByEmailRepository: LoadAccountByEmailRepository,
     updateAccessTokenRepository: UpdateAccessTokenRepository,
     hashComparer: HashComparer,
     encrypter: Encrypter
@@ -27,7 +27,7 @@ export class DbAuthentication implements Authentication {
     this.encrypter = encrypter;
   }
   async auth(authentication: AuthenticationModel): Promise<string> {
-    const account = await this.loadAccountByEmailRepository.loadAccountByEmail(
+    const account = await this.loadAccountByEmailRepository.loadByEmail(
       authentication.email
     );
     if (account) {
